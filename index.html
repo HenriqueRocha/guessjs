@@ -11,13 +11,33 @@
         <p>I have chosen a number between 1 and 100. You have 10 tries to find it.</p>
         <p>Live or die, it's your choice!</p>
 
-    
         <label for="guessField">Enter a guess: </label>
-        <input type="text">
-        <input type="submit" value="Guess">
+        <input type="text" id="guessField" class="guessField">
+        <input type="submit" value="Guess" class="guessSubmit">
+
+        <p class="result"></p>
+
         <script>
+            const guessField = document.querySelector('.guessField');
+            const guessSubmit = document.querySelector('.guessSubmit')
+            const result = document.querySelector('.result');
+
             let randomNumber = Math.floor(Math.random() * 100) + 1;
-            document.querySelector('.random').textContent = randomNumber
+
+            guessSubmit.addEventListener('click', checkGuess);
+
+            document.querySelector('.random').textContent = randomNumber;
+            
+            function checkGuess() {
+                let userGuess = Number(guessField.value);
+                if (userGuess === randomNumber) {
+                    result.textContent = 'Congratulations! You live!';
+                    result.style.backgroundColor = 'green';
+                } else {
+                    result.textContent = "You die!";
+                    result.style.backgroundColor = 'red';
+                }
+            }
         </script>        
     </body>
 </html>
