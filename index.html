@@ -21,14 +21,21 @@
         <input type="text" id="guessField" class="guessField">
         <input type="submit" value="Guess" class="guessSubmit">
 
-        <p class="result"></p>
+        <div class="result">
+            <p class="lastResult"></p>
+            <p class="lowOrHi"></p>
+            <p class="triesLeft"></p>
+        </div>
 
         <script>
             const guessField = document.querySelector('.guessField');
-            const guessSubmit = document.querySelector('.guessSubmit')
-            const result = document.querySelector('.result');
+            const guessSubmit = document.querySelector('.guessSubmit');
+            const lastResult = document.querySelector('.lastResult');
+            const lowOrHi = document.querySelector('.lowOrHi');
+            const triesLeft = document.querySelector('.triesLeft');
 
             let randomNumber = Math.floor(Math.random() * 100) + 1;
+            let guessCount = 1;
 
             guessSubmit.addEventListener('click', checkGuess);
 
@@ -36,13 +43,31 @@
             
             function checkGuess() {
                 let userGuess = Number(guessField.value);
-                if (userGuess === randomNumber) {
-                    result.textContent = 'Congratulations! You live!';
-                    result.style.backgroundColor = 'green';
+             
+                if (userGuess < randomNumber) {
+                    lastResult.textContent = 'Wrong!';
+                    lastResult.style.backgroundColor = 'red';
+                    lowOrHi.textContent = 'Your guess was lower than my number.'
+                } else if (userGuess > randomNumber) {
+                    lastResult.textContent = 'Wrong!';
+                    lastResult.style.backgroundColor = 'red';
+                    lowOrHi.textContent = 'Last guess was higher than my number!'
                 } else {
-                    result.textContent = "You die!";
-                    result.style.backgroundColor = 'red';
+                    lastResult.textContent = 'Congratulations! You live!';
+                    lastResult.style.backgroundColor = 'green';
+                    lowOrHi.textContent = '';
+                    triesLeft.textContent = '';
+                } 
+                
+                if (guessCount === 10) {
+                    lastResult.textContent = "You die!";
+                    lastResult.style.backgroundColor = 'red';
+                    lowOrHi.textContent = '';
+                    triesLeft.textContent = '';        
                 }
+
+                triesLeft.textContent = 'Tries left: ' + (10 - guessCount);
+                guessCount++;
             }
         </script>        
     </body>
