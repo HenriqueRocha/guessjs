@@ -1,86 +1,112 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>Guessing Game</title>
 
-        <style>
-            html { 
-                font-family: sans-serif;
-            }
+<head>
+    <meta charset="utf-8">
+    <title>Guessing Game</title>
 
-            body {
-                width: 50%;
-                margin: 0 auto;
-            }
-            
-            .lastResult {
-                color: white;
-                padding: 3px;
-            }
-        </style>
-    </head>
-    <body>
-        <h1>Do you want to play a game?</h1>
+    <style>
+        html {
+            font-family: sans-serif;
+        }
 
-        <p>Greetings and welcome! I want to play a game.</p>
-        <p>I have chosen a number between 1 and 100. You have 10 tries to find it.</p>
-        <p>Live or die, it's your choice!</p>
+        body {
+            width: 50%;
+            margin: 0 auto;
+        }
 
-        <label for="guessField">Enter a guess: </label>
-        <input type="text" id="guessField" class="guessField">
-        <input type="submit" value="Guess" class="guessSubmit">
+        .lastResult {
+            color: white;
+            padding: 3px;
+        }
+    </style>
+</head>
 
-        <div class="result">
-            <p class="lastResult"></p>
-            <p class="lowOrHi"></p>
-            <p class="triesLeft"></p>
-        </div>
+<body>
+    <h1>Do you want to play a game?</h1>
 
-        <script>
-            const guessField = document.querySelector('.guessField');
-            const guessSubmit = document.querySelector('.guessSubmit');
-            const lastResult = document.querySelector('.lastResult');
-            const lowOrHi = document.querySelector('.lowOrHi');
-            const triesLeft = document.querySelector('.triesLeft');
+    <p>Greetings and welcome! I want to play a game.</p>
+    <p>I have chosen a number between 1 and 100. You have 10 tries to find it.</p>
+    <p>Live or die, it's your choice!</p>
 
-            let randomNumber = Math.floor(Math.random() * 100) + 1;
-            let guessCount = 1;
+    <label for="guessField">Enter a guess: </label>
+    <input type="text" id="guessField" class="guessField">
+    <input type="submit" value="Guess" class="guessSubmit">
 
-            guessSubmit.addEventListener('click', checkGuess);
+    <div class="status">
+        <p class="lastResult"></p>
+        <p class="lowOrHi"></p>
+        <p class="triesLeft"></p>
+    </div>
 
-            document.querySelector('.random').textContent = randomNumber;
-            
-            function checkGuess() {
-                let userGuess = Number(guessField.value);
-             
+    <script>
+        const guessField = document.querySelector('.guessField');
+        const guessSubmit = document.querySelector('.guessSubmit');
+        const lastResult = document.querySelector('.lastResult');
+        const lowOrHi = document.querySelector('.lowOrHi');
+        const triesLeft = document.querySelector('.triesLeft');
+
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        let guessCount = 1;
+        let resetButton;
+
+        guessSubmit.addEventListener('click', checkGuess);
+
+        document.querySelector('.random').textContent = randomNumber;
+
+        function checkGuess() {
+            let userGuess = Number(guessField.value);
+            triesLeft.textContent = 'Tries left: ' + (10 - guessCount);
+
+            if (userGuess === randomNumber) {
+                lastResult.textContent = 'Congratulations! You live!';
+                lastResult.style.backgroundColor = 'green';
+                setGameOver();
+            } else if (guessCount === 10) {
+                lastResult.textContent = 'You die!';
+                lastResult.style.backgroundColor = 'red';
+                setGameOver();
+            } else {
+                lastResult.textContent = 'Wrong!';
+                lastResult.style.backgroundColor = 'red';
                 if (userGuess < randomNumber) {
-                    lastResult.textContent = 'Wrong!';
-                    lastResult.style.backgroundColor = 'red';
                     lowOrHi.textContent = 'Your guess was lower than my number.'
                 } else if (userGuess > randomNumber) {
-                    lastResult.textContent = 'Wrong!';
-                    lastResult.style.backgroundColor = 'red';
                     lowOrHi.textContent = 'Last guess was higher than my number!'
-                } else {
-                    lastResult.textContent = 'Congratulations! You live!';
-                    lastResult.style.backgroundColor = 'green';
-                    lowOrHi.textContent = '';
-                    triesLeft.textContent = '';
-                } 
-                
-                if (guessCount === 10) {
-                    lastResult.textContent = "You die!";
-                    lastResult.style.backgroundColor = 'red';
-                    lowOrHi.textContent = '';
-                    triesLeft.textContent = '';        
                 }
-
-                triesLeft.textContent = 'Tries left: ' + (10 - guessCount);
-                guessCount++;
-                guessField.value = '';
-                guessField.focus();
             }
-        </script>        
-    </body>
+
+            guessCount++;
+            guessField.value = '';
+            guessField.focus();
+        }
+
+        function setGameOver() {
+            lowOrHi.textContent = '';
+            triesLeft.textContent = '';
+            guessField.disabled = true;
+            guessSubmit.disabled = true;
+            resetButton = document.createElement('button');
+            resetButton.textContent = 'I want to play again!';
+            document.body.append(resetButton);
+            resetButton.addEventListener('click', resetGame);
+        }
+
+        function resetGame() {
+            resetButton.parentNode.removeChild(resetButton);
+            const status = document.querySelectorAll('.status p');
+            for (let i = 0; i < status.length; i++) {
+                status[i].textContent = '';
+            }
+            guessField.disabled = false;
+            guessField.value = '';
+            guessField.focus();
+            guessSubmit.disabled = false;
+            lastResult.style.backgroundColor = 'white';
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            guessCount = 1;
+        }
+    </script>
+</body>
+
 </html>
