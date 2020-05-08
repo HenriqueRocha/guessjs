@@ -6,6 +6,9 @@
     </head>
     <body>
         <p class="random"></p>
+        <label for="guessField">Enter a guess: </label>
+        <input type="text">
+        <input type="submit" value="Guess">
         <script>
             let randomNumber = Math.floor(Math.random() * 100) + 1;
             document.querySelector('.random').textContent = randomNumber
