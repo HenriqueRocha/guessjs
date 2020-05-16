@@ -3,16 +3,59 @@
 
 <head>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    
     <title>Guessing Game</title>
 
     <style>
         html {
-            font-family: sans-serif;
+            font-family: 'Roboto',  sans-serif;
+            font-size: 1em;
         }
 
         body {
-            width: 50%;
-            margin: 0 auto;
+            background: #f5efe0;
+            font-size: 1.8rem;
+            letter-spacing: -0.015em;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        @media (min-width: 1220px) {
+            h1 {
+                font-size: 8.4rem;
+            }
+        }
+
+        @media (min-width: 700px) {
+            h1 {
+                font-size: 6.4rem;
+            }
+        }
+
+        button, input[type="submit"] {
+            background: #cd2653;
+            border: none;
+            color: #fff;
+            font-size: 1.7rem;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 0 0 0.8rem 0.8rem;
+            padding: 1.1em 1.44em;
+        }
+
+        input[type="text"] {
+            border-radius: 0;
+            padding: 1.5rem 1.8rem;
+            border-color: #dedfdf;
+            border-style: solid;
+            border-width: 0.1rem;
+            font-size: 1.6rem;
+            margin: 0 0 0.8rem 0.8rem;
         }
 
         .lastResult {
