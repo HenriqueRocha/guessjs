@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    
+        <title>Units Converter</title>
+        
+        <style>
+            body {
+                font-family: 'Robot', sans-serif;
+            }
+        </style>
+    </head>
+
+    <body>
+        <h1>Milliseconds Converter</h1>
+        <label for="from">Milliseconds:</label>
+        <input type="text" id="input">
+
+        <p class="seconds"></p>
+        <p class="minutes"></p>
+        <p class="hours"></p>
+
+        <script>
+            const input = document.querySelector('input');
+            const seconds = document.querySelector('.seconds');
+            const minutes = document.querySelector('.minutes');
+            const hours = document.querySelector('.hours');
+
+            input.oninput = convert;
+
+            function convert() {
+                let millis = Number(input.value);
+                let s = millis / 1000;
+                let m = s / 60;
+                let h = m / 60;
+                seconds.textContent = format(s, "second");
+                minutes.textContent = format(m, "minute");
+                hours.textContent = format(h, "hour");
+            }
+
+            function format(time, unit) {
+                if (time == 1) return "1 " + unit;
+                else return time + " " + unit + "s";
+            }
+        </script>
+    </body>
+</html>
