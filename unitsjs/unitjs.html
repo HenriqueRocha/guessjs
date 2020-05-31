@@ -23,13 +23,48 @@
         <p class="minutes"></p>
         <p class="hours"></p>
 
+        <h1>Unit of Mass conversion (Imperial and Metric)</h1>
+        <label for="pounds">Pounds:</label>
+        <input type="text" id="pounds" class="poundsField">
+        <label for="kilograms">Kilograms:</label>
+        <input type="text" id="kilograms" class="kilogramsField">
+
+        <h1>Epoch vs ISO 8601</h1>
+        <p class="epoch" onclick="fillTimeFields()">Unix Epoch time:</p>
+
+        <label for="epoch">Epoch:</label>
+        <input type="text" id="epoch" class="epochInput">
+        <label for="iso">ISO 8601:</label>
+        <input type="text" id="iso" class="isoInput">
+
         <script>
             const input = document.querySelector('input');
             const seconds = document.querySelector('.seconds');
             const minutes = document.querySelector('.minutes');
             const hours = document.querySelector('.hours');
+            const epochTime = document.querySelector('.epoch');
+            const epochInput = document.querySelector('.epochInput');
+            const isoInput = document.querySelector('.isoInput');
+
+            epochTime.textContent = "Unix Epoch time: " + Math.floor(Date.now() / 1000);
+            startEpochTimer();
+            setInterval(startEpochTimer, 1000);
+
+            const POUNDS_TO_KG_RATIO=0.45359237
+            const poundsInput = document.querySelector('.poundsField');
+            const kilogramsInput = document.querySelector('.kilogramsField');
 
             input.oninput = convert;
+
+            poundsInput.oninput = convertImperialToMetric;
+            kilogramsInput.oninput = convertMetricToImperial;
+
+            epochInput.oninput = epochToIso;
+            isoInput.oninput = isoToEpoch;
+
+            function startEpochTimer() {
+                epochTime.textContent = "Unix Epoch time: " + Math.floor(Date.now() / 1000);
+            }
 
             function convert() {
                 let millis = Number(input.value);
@@ -45,6 +80,32 @@
                 if (time == 1) return "1 " + unit;
                 else return time + " " + unit + "s";
             }
-        </script>
+
+            function convertImperialToMetric() {
+                let pounds = Number(poundsInput.value);
+                kilogramsInput.value = pounds * POUNDS_TO_KG_RATIO;
+            }
+
+            function convertMetricToImperial() {
+                let kilograms = Number(kilogramsInput.value);
+                poundsInput.value = kilograms / POUNDS_TO_KG_RATIO;
+            }
+
+            function epochToIso() {
+                let epoch = Number(epochInput.value);
+                isoInput.value = new Date(epoch * 1000).toISOString();
+            }
+
+            function isoToEpoch() {
+                let iso = new Date(isoInput.value);
+                epochInput.value = iso.getTime() / 1000;
+            }
+
+            function fillTimeFields() {
+                const time = Math.floor(Date.now() / 1000);
+                epochInput.value = time;
+                epochToIso();
+            }
+</script>
     </body>
 </html>
